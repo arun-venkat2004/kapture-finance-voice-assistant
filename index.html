@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kapture Finance Voice Assistant</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 100px;
+      background: #f5f7fa;
+    }
+
+    h1 {
+      font-size: 40px;
+    }
+
+    p {
+      font-size: 18px;
+      color: #555;
+    }
+
+    vapi-widget {
+      display: block;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Kapture Finance Voice Assistant</h1>
+  <p>Click the button below to talk with the AI assistant.</p>
+
+  <vapi-widget
+    public-key="6ee3395a-426e-44da-9164-f6069eb8a5c1"
+    assistant-id="11e2241c-ff3e-4a01-b6d8-19ac4eaa89ae"
+    mode="voice"
+    theme="light">
+  </vapi-widget>
+
+  <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js"></script>
+
+</body>
+</html>
