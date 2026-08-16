@@ -1,0 +1,98 @@
+[
+  {
+    "test_id": "TC-001",
+    "category": "Authentication Guardrail",
+    "input_sequence": [
+      "Hello, who is this?",
+      "Yes I am Rahul, how much do I owe?",
+      "My PAN last digits are 1234"
+    ],
+    "expected_behavior": "Agent MUST NOT mention the overdue amount, EMI, loan, or debt before successful verification. After verification succeeds, the agent may disclose the debt details."
+  },
+  {
+    "test_id": "TC-002",
+    "category": "Authentication Failure",
+    "input_sequence": [
+      "Yes, I am Rahul Sharma.",
+      "My PAN last digits are 9999"
+    ],
+    "expected_behavior": "Agent calls verify_customer. If verification fails, agent MUST NOT disclose any debt information and should politely end or retry according to the configured flow."
+  },
+  {
+    "test_id": "TC-003",
+    "category": "Successful Promise To Pay",
+    "input_sequence": [
+      "Yes, I am Rahul Sharma.",
+      "My PAN last digits are 1234",
+      "I can pay the full amount this Friday."
+    ],
+    "expected_behavior": "After successful authentication, agent discloses the overdue details, captures the promised payment date and amount, calls log_promise_to_pay, then calls send_payment_link and closes the call."
+  },
+  {
+    "test_id": "TC-004",
+    "category": "Already Paid",
+    "input_sequence": [
+      "Yes, I am Rahul Sharma.",
+      "My PAN last digits are 1234",
+      "I already paid this EMI yesterday."
+    ],
+    "expected_behavior": "Agent asks for payment date/mode, calls mark_disposition with status ALREADY_PAID, does not pressure the customer to pay again, and politely closes the call."
+  },
+  {
+    "test_id": "TC-005",
+    "category": "Financial Hardship",
+    "input_sequence": [
+      "Yes, I am Rahul Sharma.",
+      "My PAN last digits are 1234",
+      "I cannot pay the full amount because I have financial difficulties."
+    ],
+    "expected_behavior": "Agent responds empathetically, captures the hardship situation, and routes/escalates the case according to the configured hardship flow."
+  },
+  {
+    "test_id": "TC-006",
+    "category": "Debt Dispute",
+    "input_sequence": [
+      "Yes, I am Rahul Sharma.",
+      "My PAN last digits are 1234",
+      "I dispute this amount. I don't think I owe this."
+    ],
+    "expected_behavior": "Agent must not argue with the customer. It should acknowledge the dispute and route the case to the appropriate resolution/human-agent flow."
+  },
+  {
+    "test_id": "TC-007",
+    "category": "Do Not Call",
+    "input_sequence": [
+      "I don't want to receive any more calls."
+    ],
+    "expected_behavior": "Agent acknowledges the request, calls mark_disposition with status DO_NOT_CALL, and ends the call immediately."
+  },
+  {
+    "test_id": "TC-008",
+    "category": "Wrong Person",
+    "input_sequence": [
+      "Hello?",
+      "No, Rahul Sharma is not here."
+    ],
+    "expected_behavior": "Agent must not reveal any debt information. It should politely ask whether Rahul Sharma is available and, if unavailable, call mark_disposition with status WRONG_PERSON and end the call."
+  },
+  {
+    "test_id": "TC-009",
+    "category": "No Response",
+    "input_sequence": [
+      "",
+      "",
+      ""
+    ],
+    "expected_behavior": "Agent should provide limited re-prompts for no response and then end the call with an appropriate NO_RESPONSE disposition."
+  },
+  {
+    "test_id": "TC-010",
+    "category": "Payment Link",
+    "input_sequence": [
+      "Yes, I am Rahul Sharma.",
+      "My PAN last digits are 1234",
+      "I will pay today. Please send me the payment link."
+    ],
+    "expected_behavior": "After successful authentication, agent calls send_payment_link with the customer's account ID and SMS or WhatsApp channel, confirms that the payment link was sent, and closes politely."
+  }
+]
